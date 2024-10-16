@@ -1,24 +1,25 @@
-import {html, render} from 'lit-html'
-import {TonConnectUI, THEME, CHAIN} from '@tonconnect/ui'
-import {Clock, EverscaleStandaloneClient} from 'everscale-standalone-client'
-import {ProviderRpcClient} from 'everscale-inpage-provider'
-import {Address as TonAddress} from '@ton/core'
 import { AirdropState, AirdropUI } from '@broxus/airdrop-ui'
+import { Address as TonAddress } from '@ton/core'
+import { CHAIN, THEME, TonConnectUI } from '@tonconnect/ui'
+import { ProviderRpcClient } from 'everscale-inpage-provider'
+import { Clock, EverscaleStandaloneClient } from 'everscale-standalone-client'
+import { html, render } from 'lit-html'
 import './index.css'
 
 const clock = new Clock()
 
 const rpc = new ProviderRpcClient({
-    fallback: () => EverscaleStandaloneClient.create({
-        clock,
-        connection: {
-            data: {
-                endpoint: 'https://jrpc-ton.broxus.com/rpc',
+    fallback: () =>
+        EverscaleStandaloneClient.create({
+            clock,
+            connection: {
+                data: {
+                    endpoint: 'https://jrpc-ton.broxus.com/rpc',
+                },
+                id: Number(CHAIN.MAINNET),
+                type: 'jrpc',
             },
-            id: Number(CHAIN.MAINNET),
-            type: 'jrpc',
-        },
-    }),
+        }),
     forceUseFallback: true,
 })
 
@@ -40,7 +41,8 @@ render(airdropUI.getState(), document.body)
 function connect() {
     try {
         tonConnectUI.openModal()
-    } catch (e) {
+    }
+    catch (e) {
         console.error(e)
     }
 }
@@ -48,7 +50,8 @@ function connect() {
 function disconnect() {
     try {
         tonConnectUI.disconnect()
-    } catch (e) {
+    }
+    catch (e) {
         console.error(e)
     }
 }
