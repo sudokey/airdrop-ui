@@ -5,6 +5,7 @@
     import { ProviderRpcClient } from 'everscale-inpage-provider'
     import { Address as TonAddress } from '@ton/core'
     import { AirdropUI } from '@broxus/airdrop-ui'
+    import { AirdropStatus } from '@broxus/airdrop-ui/dist/types';
 
     const clock = new Clock()
 
@@ -88,19 +89,19 @@
         </div>
 
         <div>Status</div>
-        <div v-if="!state.userAddress">Connect wallet</div>
-        <div v-else-if="state.claimed === true">Reward claimed</div>
-        <div v-else-if="state.claimed === false && state.claimData?.status === 'signed' && state.storageKey">
+        <div v-if="state.status === AirdropStatus.NoUser">Connect wallet</div>
+        <div v-else-if="state.status === AirdropStatus.HasClaimed">Reward claimed</div>
+        <div v-else-if="state.status === AirdropStatus.CanClaim">
             <button
                 :disabled="state.loading || state.claimLoading"
-                @click="() => airdropUI.claim(state.claimData!, state.storageKey!)"
+                @click="() => airdropUI.claim()"
             >
                 {{ state.loading || state.claimLoading ? 'Claim...' : 'Claim' }}
             </button>
         </div>
-        <div v-else-if="state.claimData?.status === 'inQueue'">In queue</div>
-        <div v-else-if="state.claimData?.status === 'noReward'">No reward</div>
-        <div v-else-if="!state.airdropName">Select airdrop</div>
+        <div v-else-if="state.status === AirdropStatus.InQueue">In queue</div>
+        <div v-else-if="state.status === AirdropStatus.NoReward">No reward</div>
+        <div v-else-if="state.status === AirdropStatus.NoAirdrop">Select airdrop</div>
         <div v-else>Loading...</div>
 
         <template v-if="state.userAddress">

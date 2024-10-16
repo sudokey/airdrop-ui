@@ -5,6 +5,7 @@ import { ProviderRpcClient } from 'everscale-inpage-provider'
 import { Clock, EverscaleStandaloneClient } from 'everscale-standalone-client'
 import { html, render } from 'lit-html'
 import './index.css'
+import { AirdropStatus } from '@broxus/airdrop-ui/dist/types'
 
 const clock = new Clock()
 
@@ -92,24 +93,24 @@ function template(state: AirdropState) {
                 </div>
 
                 <div>Status</div>
-                ${!state.userAddress ? html`
+                ${state.status === AirdropStatus.NoUser ? html`
                     <div>Connect wallet</div>
-                ` : state.claimed === true ? html`
+                ` : state.status === AirdropStatus.HasClaimed ? html`
                     <div>Reward claimed</div>
-                ` : state.claimed === false && state.claimData?.status === 'signed' && state.storageKey ? html`
+                ` : state.status === AirdropStatus.CanClaim ? html`
                     <div>
                         <button
                             .disabled=${state.loading || state.claimLoading}
-                            @click=${() => airdropUI.claim(state.claimData!, state.storageKey!)}
+                            @click=${() => airdropUI.claim()}
                         >
                             ${state.loading || state.claimLoading ? 'Claim...' : 'Claim'}
                         </button>
                     </div>
-                ` : state.claimData?.status === 'inQueue' ? html`
+                ` : state.status === AirdropStatus.InQueue ? html`
                     <div>In queue</div>
-                ` : state.claimData?.status === 'noReward' ? html`
+                ` : state.status === AirdropStatus.NoReward ? html`
                     <div>No reward</div>
-                ` : !state.airdropName ? html`
+                ` : state.status === AirdropStatus.NoAirdrop ? html`
                     <div>Select airdrop</div>
                 ` : html`
                     <div>Loading...</div>

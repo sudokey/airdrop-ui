@@ -6,6 +6,7 @@ import { Clock, EverscaleStandaloneClient } from 'everscale-standalone-client'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import { AirdropStatus } from '@broxus/airdrop-ui/dist/types'
 
 const clock = new Clock()
 
@@ -93,28 +94,28 @@ export const App = () => {
 
                 <div>Status</div>
 
-                {!state.userAddress
-                    ? <div>Connect wallet</div>
-                    : state.claimed === true
-                    ? <div>Reward claimed</div>
-                    : state.claimed === false && state.claimData?.status === 'signed' && state.storageKey
-                    ? (
-                        <div>
-                            <button
-                                disabled={state.loading || state.claimLoading}
-                                onClick={() => airdropUI.claim(state.claimData!, state.storageKey!)}
-                            >
-                                {(state.loading || state.claimLoading) ? 'Claim...' : 'Claim'}
-                            </button>
-                        </div>
-                    )
-                    : state.claimData?.status === 'inQueue'
-                    ? <div>In queue</div>
-                    : state.claimData?.status === 'noReward'
-                    ? <div>No reward</div>
-                    : !state.airdropName
-                    ? <div>Select airdrop</div>
-                    : <div>Loading...</div>}
+                {state.status === AirdropStatus.NoUser ? (
+                    <div>Connect wallet</div>
+                ) : state.status === AirdropStatus.HasClaimed ? (
+                    <div>Reward claimed</div>
+                ) : state.status === AirdropStatus.CanClaim ? (
+                    <div>
+                        <button
+                            disabled={state.loading || state.claimLoading}
+                            onClick={() => airdropUI.claim()}
+                        >
+                            {(state.loading || state.claimLoading) ? 'Claim...' : 'Claim'}
+                        </button>
+                    </div>
+                ) : state.status === AirdropStatus.InQueue ? (
+                    <div>In queue</div>
+                ) : state.status === AirdropStatus.NoReward ? (
+                    <div>No reward</div>
+                ) : state.status === AirdropStatus.NoAirdrop ? (
+                    <div>Select airdrop</div>
+                ) : (
+                    <div>Loading...</div>
+                )}
 
                 {state.userAddress && (
                     <>
