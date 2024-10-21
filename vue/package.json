@@ -15,7 +15,7 @@
         "@tonconnect/ui": "^2.0.9",
         "buffer": "^6.0.3",
         "everscale-inpage-provider": "^0.3.66",
-        "everscale-standalone-client": "^2.1.26",
+        "everscale-standalone-client": "^2.1.27",
         "lit-html": "^3.2.1",
         "vue": "^3.5.12",
         "webpack": "^5.95.0"

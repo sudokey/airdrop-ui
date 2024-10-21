@@ -18,7 +18,7 @@
         "@types/react-dom": "^18.3.1",
         "buffer": "^6.0.3",
         "everscale-inpage-provider": "^0.3.66",
-        "everscale-standalone-client": "^2.1.26",
+        "everscale-standalone-client": "^2.1.27",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "webpack": "^5.95.0"
