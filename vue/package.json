@@ -1,0 +1,36 @@
+{
+    "name": "vanila",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "serve": "webpack serve"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@gigadrop/ui": "^1.0.0",
+        "@ton/core": "^0.59.0",
+        "@tonconnect/ui": "^2.0.9",
+        "buffer": "^6.0.3",
+        "everscale-inpage-provider": "^0.3.66",
+        "everscale-standalone-client": "^2.1.27",
+        "lit-html": "^3.2.1",
+        "vue": "^3.5.12",
+        "webpack": "^5.95.0"
+    },
+    "devDependencies": {
+        "css-loader": "^7.1.2",
+        "html-webpack-plugin": "^5.6.0",
+        "mini-css-extract-plugin": "^2.9.1",
+        "style-loader": "^4.0.0",
+        "ts-loader": "^9.5.1",
+        "typescript": "^5.6.3",
+        "vue-loader": "^17.4.2",
+        "vue-style-loader": "^4.1.3",
+        "vue-template-compiler": "^2.7.16",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^5.1.0"
+    }
+}
