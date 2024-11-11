@@ -32,7 +32,7 @@ const tonConnectUI = new TonConnectUI({
     },
 })
 
-const airdropUI = new AirdropUI(tonConnectUI, rpc, clock)
+const airdropUI = new AirdropUI(tonConnectUI.connector, rpc, clock)
 
 export const App = () => {
     const [state, setState] = React.useState(() => airdropUI.getState())

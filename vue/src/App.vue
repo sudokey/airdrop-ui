@@ -30,7 +30,7 @@
         },
     })
 
-    const airdropUI = new AirdropUI(tonConnectUI, rpc, clock)
+    const airdropUI = new AirdropUI(tonConnectUI.connector, rpc, clock)
 
     const state = ref(airdropUI.getState());
 
