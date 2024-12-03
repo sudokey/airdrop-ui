@@ -89,6 +89,25 @@ function template(state: AirdropState) {
                         <option value="test8">Test8</option>
                         <option value="test9">Test9</option>
                         <option value="test10">Test10</option>
+                        <option value="test_claim_id">test_claim_id</option>
+                    </select>
+                </div>
+
+                <div>Claim ID</div>
+                <div>
+                    <select
+                        style="width: 200px;"
+                        .value=${state.claimId ?? ''}
+                        @change=${(e: Event) => airdropUI.setClaimId((e.target as HTMLSelectElement).value)}
+                    >
+                        <option></option>
+                        ${state.claimData?.status === 'signed'
+                            ? state.claimData.rewards.map(item => html`
+                                <option .value=${item.claimId}>
+                                    {item.claimId}
+                                </option>
+                            `)
+                            : null}
                     </select>
                 </div>
 
@@ -112,6 +131,8 @@ function template(state: AirdropState) {
                     <div>No reward</div>
                 ` : state.status === AirdropStatus.NoAirdrop ? html`
                     <div>Select airdrop</div>
+                ` : state.status === AirdropStatus.NoClaimId ? html`
+                    <div>Select claimId</div>
                 ` : html`
                     <div>Loading...</div>
                 `}
@@ -129,20 +150,23 @@ function template(state: AirdropState) {
                 ${state.claimData ? html`
                     <h3>Claim data</h3>
                     ${state.claimData?.status === 'signed' ? html`
-                        <div>Status</div>
-                        <div>${state.claimData.status}</div>
-                        <div>Factory address</div>
-                        <div>${state.claimData.factory}</div>
-                        <div>Airdrop</div>
-                        <div>${state.claimData.airdrop}</div>
-                        <div>Data</div>
-                        <div>${state.claimData.data}</div>
-                        <div>Signature</div>
-                        <div>${state.claimData.signature}</div>
-                        <div>Reward</div>
-                        <div>${state.claimData.reward}</div>
-                        <div>Nonce</div>
-                        <div>${state.claimData.nonce}</div>
+                        ${state.claimData.rewards.map((reward, index) => html`
+                            <h4>Reward #${index + 1}</h4>
+                            <div>Claim ID</div>
+                            <div>${reward.claimId}</div>
+                            <div>Factory address</div>
+                            <div>${reward.factory}</div>
+                            <div>Airdrop</div>
+                            <div>${reward.airdrop}</div>
+                            <div>Data</div>
+                            <div>${reward.data}</div>
+                            <div>Signature</div>
+                            <div>${reward.signature}</div>
+                            <div>Reward</div>
+                            <div>${reward.reward}</div>
+                            <div>Nonce</div>
+                            <div>${reward.nonce}</div>
+                        `)}
                     ` : state.claimData?.status === 'inQueue' ? html`
                         <div>Status</div>
                         <div>${state.claimData.status}</div>

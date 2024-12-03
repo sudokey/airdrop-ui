@@ -56,7 +56,7 @@ export const App = () => {
     }
 
     React.useEffect(() => {
-        airdropUI.setAirdropName('test1')
+        airdropUI.setAirdropName('test_claim_id')
         return airdropUI.subscribe(setState)
     }, [])
 
@@ -75,6 +75,7 @@ export const App = () => {
                 <div>Airdrop</div>
                 <div>
                     <select
+                        style={{ width: '200px' }}
                         value={state.airdropName ?? undefined}
                         onChange={e => airdropUI.setAirdropName(e.target.value)}
                     >
@@ -89,6 +90,25 @@ export const App = () => {
                         <option value='test8'>Test8</option>
                         <option value='test9'>Test9</option>
                         <option value='test10'>Test10</option>
+                        <option value='test_claim_id'>test_claim_id</option>
+                    </select>
+                </div>
+
+                <div>Claim ID</div>
+                <div>
+                    <select
+                        style={{ width: '200px' }}
+                        value={state.claimId ?? undefined}
+                        onChange={e => airdropUI.setClaimId(e.target.value)}
+                    >
+                        <option></option>
+                        {state.claimData?.status === 'signed' && (
+                            state.claimData.rewards.map(item => (
+                                <option key={item.claimId} value={item.claimId}>
+                                    {item.claimId}
+                                </option>
+                            ))
+                        )}
                     </select>
                 </div>
 
@@ -113,6 +133,8 @@ export const App = () => {
                     <div>No reward</div>
                 ) : state.status === AirdropStatus.NoAirdrop ? (
                     <div>Select airdrop</div>
+                ) : state.status === AirdropStatus.NoClaimId ? (
+                    <div>Select claimId</div>
                 ) : (
                     <div>Loading...</div>
                 )}
@@ -134,22 +156,25 @@ export const App = () => {
                         <h3>Claim data</h3>
                         {state.claimData?.status === 'signed'
                             ? (
-                                <>
-                                    <div>Status</div>
-                                    <div>{state.claimData.status}</div>
-                                    <div>Factory address</div>
-                                    <div>{state.claimData.factory}</div>
-                                    <div>Airdrop</div>
-                                    <div>{state.claimData.airdrop}</div>
-                                    <div>Data</div>
-                                    <div>{state.claimData.data}</div>
-                                    <div>Signature</div>
-                                    <div>{state.claimData.signature}</div>
-                                    <div>Reward</div>
-                                    <div>{state.claimData.reward}</div>
-                                    <div>Nonce</div>
-                                    <div>{state.claimData.nonce}</div>
-                                </>
+                                state.claimData.rewards.map((reward, index) => (
+                                    <React.Fragment key={reward.claimId}>
+                                        <h4>Reward #{index + 1}</h4>
+                                        <div>Claim ID</div>
+                                        <div>{reward.claimId}</div>
+                                        <div>Factory address</div>
+                                        <div>{reward.factory}</div>
+                                        <div>Airdrop</div>
+                                        <div>{reward.airdrop}</div>
+                                        <div>Data</div>
+                                        <div>{reward.data}</div>
+                                        <div>Signature</div>
+                                        <div>{reward.signature}</div>
+                                        <div>Reward</div>
+                                        <div>{reward.reward}</div>
+                                        <div>Nonce</div>
+                                        <div>{reward.nonce}</div>
+                                    </React.Fragment>
+                                ))
                             )
                             : state.claimData?.status === 'inQueue'
                             ? (

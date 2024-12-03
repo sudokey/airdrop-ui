@@ -71,6 +71,7 @@
         <div>Airdrop</div>
         <div>
             <select
+                style="width: 200px;"
                 v-bind:value="state.airdropName"
                 v-on:change="e => airdropUI.setAirdropName((e.target as HTMLSelectElement).value)"
             >
@@ -85,6 +86,23 @@
                 <option value="test8">Test8</option>
                 <option value="test9">Test9</option>
                 <option value="test10">Test10</option>
+                <option value='test_claim_id'>test_claim_id</option>
+            </select>
+        </div>
+
+        <div>Claim ID</div>
+        <div>
+            <select
+                style="width: 200px;"
+                v-bind:value="state.claimId"
+                v-on:change="e => airdropUI.setClaimId((e.target as HTMLSelectElement).value)"
+            >
+                <option></option>
+                <template v-if="state.claimData?.status === 'signed'">
+                    <option v-for="item in state.claimData.rewards" v-bind:key="item.claimId">
+                        {{ item.claimId }}
+                    </option>
+                </template>
             </select>
         </div>
 
@@ -102,6 +120,7 @@
         <div v-else-if="state.status === AirdropStatus.InQueue">In queue</div>
         <div v-else-if="state.status === AirdropStatus.NoReward">No reward</div>
         <div v-else-if="state.status === AirdropStatus.NoAirdrop">Select airdrop</div>
+        <div v-else-if="state.status === AirdropStatus.NoClaimId">Select claim id</div>
         <div v-else>Loading...</div>
 
         <template v-if="state.userAddress">
@@ -117,20 +136,23 @@
         <template v-if="state.claimData">
             <h3>Claim data</h3>
             <template v-if="state.claimData?.status === 'signed'">
-                <div>Status</div>
-                <div>{{ state.claimData.status }}</div>
-                <div>Factory address</div>
-                <div>{{ state.claimData.factory }}</div>
-                <div>Airdrop</div>
-                <div>{{ state.claimData.airdrop }}</div>
-                <div>Data</div>
-                <div>{{ state.claimData.data }}</div>
-                <div>Signature</div>
-                <div>{{ state.claimData.signature }}</div>
-                <div>Reward</div>
-                <div>{{ state.claimData.reward }}</div>
-                <div>Nonce</div>
-                <div>{{ state.claimData.nonce }}</div>
+                <template v-for="(reward, index) in state.claimData.rewards" v-bind:key="reward.claimId">
+                    <h4>Reward #{{index + 1}}</h4>
+                    <div>Claim ID</div>
+                    <div>{{ reward.claimId }}</div>
+                    <div>Factory address</div>
+                    <div>{{ reward.factory }}</div>
+                    <div>Airdrop</div>
+                    <div>{{ reward.airdrop }}</div>
+                    <div>Data</div>
+                    <div>{{ reward.data }}</div>
+                    <div>Signature</div>
+                    <div>{{ reward.signature }}</div>
+                    <div>Reward</div>
+                    <div>{{ reward.reward }}</div>
+                    <div>Nonce</div>
+                    <div>{{ reward.nonce }}</div>
+                </template>
             </template>
             <template v-if="state.claimData?.status === 'inQueue'">
                 <div>Status</div>
@@ -153,7 +175,8 @@
     gap: 1em 2em;
 }
 
-h3 {
+h3,
+h4 {
     grid-column: 1/-1;
     margin: 1em 0 0;
 }

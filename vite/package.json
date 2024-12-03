@@ -12,7 +12,7 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
-    "@gigadrop/ui": "^1.1.0",
+    "@gigadrop/ui": "^2.0.0",
     "@ton/core": "^0.59.0",
     "@tonconnect/ui": "^2.0.9",
     "buffer": "^6.0.3",
